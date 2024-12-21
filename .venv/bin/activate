@@ -37,7 +37,7 @@ deactivate () {
 
 
 # Set the timezone
-export TZ='Europe/Moscow'
+export TZ='Asia/Tashkent'
 
 # unset irrelevant variables
 deactivate nondestructive
@@ -71,3 +71,5 @@ fi
 if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ] ; then
     hash -r 2> /dev/null
 fi
+
+

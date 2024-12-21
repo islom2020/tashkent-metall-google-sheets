@@ -1,5 +1,5 @@
 from clients.moysklad_client import MoyskladClient
-from etl.data_preparation import transform_supply, transform_customer_order, transform_purchase_return
+from etl.data_preparation import transform_supply, transform_customer_order, transform_purchase_return,transform_move, transform_sales_return,transform_loss, transform_payment
 from sheets.sheets_handler import GoogleSheetsHandler
 from datetime import datetime
 
@@ -21,12 +21,14 @@ def fetch_references(client: MoyskladClient):
         },
         "currencies": {item["meta"]["href"]: item["name"] for item in client.fetch_paginated_data("/entity/currency")},
         "supplies": {item["meta"]["href"]: item["name"] for item in client.fetch_paginated_data("/entity/supply")},
+        "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
     }
 
 
 def main():
     """ETL Process for MoySklad."""
     print(f"[{datetime.now()}] Starting MoySklad ETL...")
+
     sheets_handler = GoogleSheetsHandler(
         GOOGLE_CREDENTIALS_PATH, GOOGLE_SHEETS_ID)
     moysklad_client = MoyskladClient()
@@ -38,21 +40,51 @@ def main():
     tasks = [
         {
             "name": "Приход товар",
-            "endpoint": "/entity/supply",
+            "endpoint": "/entity/supply?expand=positions&limit=100&offset=0",
             "transform_function": transform_supply,
             "headers": ["Дата", "№ документа", "Контрагент", "Склад", "Наименование товара", "Ед.изм", "Количество", "Валюта", "Цена","Сумма", "Вес"]
         },
         {
             "name": "Возврат приход товар",
-            "endpoint": "/entity/purchasereturn",
+            "endpoint": "/entity/purchasereturn?expand=supply,positions&limit=100&offset=0",
             "transform_function": transform_purchase_return,
             "headers": ["Дата", "№ документа", "№ документа приход товар","Контрагент", "Склад", "Наименование товара", "Ед.изм", "Количество", "Валюта", "Цена","Сумма", "Вес"]
         },
         {
             "name": "Продажа товар",
-            "endpoint": "/entity/customerorder",
+            "endpoint": "/entity/demand?expand=positions&limit=100&offset=0",
             "transform_function": transform_customer_order,
-            "headers": ["Дата", "№ документа", "Склад", "Наименование товара", "Количество"]
+            "headers": ["Дата", "№ документа", "Склад", "Наименование товара", "Количество", "Грузчик бригада", "Кто отгрузил"]
+        },
+        {
+            "name": "Перемещение",
+            "endpoint": "/entity/move?expand=positions&limit=100&offset=0",
+            "transform_function": transform_move,
+            "headers": ["Дата", "№ документа", "Склад отгрузка", "Склад приход", "Наименование товара", "Ед.изм", "Количество", "Вес"]
+        },
+        {
+            "name": "Возврат продажа товар",
+            "endpoint": "/entity/salesreturn?expand=demand,positions&limit=100&offset=0",
+            "transform_function": transform_sales_return,
+            "headers": ["Дата", "№ документа", "№ документа приход товар","Контрагент", "Склад", "Наименование товара", "Ед.изм", "Количество", "Валюта", "Цена","Сумма", "Вес"]
+        },
+        {
+            "name": "Списание",
+            "endpoint": "/entity/loss?expand=positions&limit=100&offset=0",
+            "transform_function": transform_loss,
+            "headers": ["Дата", "№ документа", "Склад", "Наименование товара", "Количество", "Ед.изм", "Вес"]
+        },
+        {
+            "name": "Касса приход",
+            "endpoint": "/entity/paymentin",
+            "transform_function": transform_payment,
+            "headers": ["Дата", "Кошелок", "Валюта", "Категория", "Контрагент", "Назначение", "Сумма"]
+        },
+        {
+            "name": "Касса расход",
+            "endpoint": "/entity/paymentout?expand=expenseItem&limit=100&offset=0",
+            "transform_function": transform_payment,
+            "headers": ["Дата", "Кошелок", "Валюта", "Категория", "Контрагент", "Назначение", "Сумма"]
         }
     ]
 

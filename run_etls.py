@@ -1,5 +1,10 @@
 import subprocess
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+pythonpath = os.getenv("PYTHONPATH")
 
 def run_script(script_name):
     """Run a Python script and wait for it to complete."""
@@ -15,11 +20,16 @@ def run_script(script_name):
 
 def main():
     try:
+        print("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
         # Run Workly ETL
         run_script("etl/etl_workly_main.py")
         
         # Run MoySklad ETL
         run_script("etl/etl_moysklad_main.py")
+
+        # Run Moysklad currency ETL
+        run_script("etl/etl_currency_main.py")
     except RuntimeError as e:
         print(f"[{datetime.now()}] ETL process failed: {e}")
     else:

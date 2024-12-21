@@ -7,4 +7,4 @@ cd /home/upsoft/projects/tashkent-metall-google-sheets
 source .venv/bin/activate
 
 # Run the ETL Python script
-python3 etl/etl_workly_main.py
+python3 run_etls.py
