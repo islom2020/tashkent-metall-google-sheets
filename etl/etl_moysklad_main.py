@@ -54,7 +54,7 @@ def main():
             "name": "Продажа товар",
             "endpoint": "/entity/demand?expand=positions&limit=100&offset=0",
             "transform_function": transform_customer_order,
-            "headers": ["Дата", "№ документа", "Склад", "Наименование товара", "Количество", "Грузчик бригада", "Кто отгрузил"]
+            "headers": ["Дата", "№ документа", "Клиент", "Склад", "Наименование товара", "Ед.изм", "Валюта", "Цена", "Сумма", "Количество", "Вес", "Грузчик бригада", "Кто отгрузил"]
         },
         {
             "name": "Перемещение",
@@ -93,12 +93,19 @@ def main():
         try:
             print(f"[{datetime.now()}] Fetching data for {task['name']}...")
             raw_data = moysklad_client.fetch_paginated_data(task["endpoint"])
+
             print(f"[{datetime.now()}] Transforming data for {task['name']}...")
             transformed_data = task["transform_function"](
                 raw_data, refs, moysklad_client)
+            
             print(f"[{datetime.now()}] Writing data for {task['name']}...")
             sheets_handler.write_data(
                 task["name"], transformed_data, task["headers"])
+            
+            # print(f"[{datetime.now()}] Setting first column format datetime for {task['name']}...")
+            # sheets_handler.set_column_format(
+            #     task["name"], column_index=0, format_type="datetime")
+
             print(f"[{datetime.now()}] Task {task['name']} completed successfully!")
         except Exception as e:
             print(f"[{datetime.now()}] Error processing {task['name']}: {str(e)}")

@@ -31,8 +31,8 @@ def transform_supply(data, refs, client):
                     productUomName,
                     position.get("quantity", "-"),  # Quantity
                     currencyName,
-                    position.get("price", "-"),
-                    item['sum'],
+                    position.get("price", "-")/100,
+                    item['sum']/100,
                     product.get("weight", "-")  # Weight
                 ])
         except Exception as e:
@@ -63,8 +63,8 @@ def transform_purchase_return(data, refs, client):
                     productUomName,
                     position.get("quantity", "-"),  # Quantity
                     currencyName,
-                    position.get("price", "-"),
-                    item['sum'],
+                    position.get("price", "-")/100,
+                    item['sum']/100,
                     product.get("weight", "-")  # Weight
                 ])
         except Exception as e:
@@ -95,7 +95,8 @@ def transform_sales_return(data, refs, client):
                     productUomName,
                     position.get("quantity", "-"),  # Quantity
                     currencyName,
-                    position.get("price", "-"),
+                    position.get("price", "-")/100,
+                    item['sum']/100,
                     product.get("weight", "-")  # Weight
                 ])
         except Exception as e:
@@ -137,18 +138,29 @@ def transform_customer_order(data, refs, client):
         try:
             store_name = refs["stores"].get(item.get("store", {}).get("meta", {}).get("href"), "Unknown")
             adjusted_moment = adjust_datetime(item['moment'])
+            agentName = refs["agents"].get(item.get("agent", {}).get("meta", {}).get("href"), "Unknown agent")
             # positions = client.fetch_paginated_data(item["positions"]["meta"]["href"])
             positions = item["positions"].get("rows", [])
             attributes = item.get("attributes", {})
+            currencyName = refs["currencies"].get(item.get("rate", {}).get("currency", {}).get("meta", {}).get("href"), "Unknown currency")
+
 
             for position in positions:
                 product = refs["products"].get(position.get("assortment", {}).get("meta", {}).get("href"), {})
+                productUomName = refs["uoms"].get(product.get("uomMetaHref", {}), "Unknown uom")
+
                 results.append([
                     adjusted_moment,  # Adjusted Date
                     item["name"],  # Document Number
+                    agentName,
                     store_name,  # Store
                     product.get("name", "Unknown"),  # Product Name
+                    productUomName,
+                    currencyName,
+                    position.get("price", "-")/100,
+                    item['sum']/100,
                     position.get("quantity", 0),  # Quantity
+                    product.get("weight", "-"),  # Weight
                     get_attribute_value(attributes, demand_attribute_brigada),
                     get_attribute_value(attributes, demand_attribute_kto_otgruzil)
                 ])
@@ -200,7 +212,7 @@ def transform_payment(data, refs, client):
                 item.get("expenseItem", {}).get("name","-"),
                 agentName,
                 item.get("paymentPurpose","-"),
-                item["sum"]
+                item["sum"]/100
             ])
         except Exception as e:
             logging.error(f"Error processing payment entry {item.get('name', 'Unknown')}: {str(e)}")
@@ -211,11 +223,25 @@ def adjust_datetime(datetime_str):
     try:
         dt = datetime.fromisoformat(datetime_str.replace("Z", "+00:00"))  # Handle ISO format with UTC offset
         dt_adjusted = dt + timedelta(hours=2)
-        return dt_adjusted.isoformat()  # Return adjusted datetime in ISO format
+        return dt_adjusted.strftime('%Y-%m-%d %H:%M:%S')#.isoformat()  # Return adjusted datetime in ISO format
+        # return dt_adjusted.strftime('%m/%d/%Y %H:%M:%S')#.isoformat()  # Return adjusted datetime in ISO format
     except Exception as e:
         logging.error(f"Failed to adjust datetime: {datetime_str} - {str(e)}")
-        return datetime_str  # Return original if adjustment fails
+        return "-"  # Return original if adjustment fails
+        
+
+# def adjust_datetime(datetime_str):
+#     try:
+#         # Parse the ISO 8601 string to a datetime object
+#         dt = datetime.fromisoformat(datetime_str.replace("Z", "+00:00"))
+#         # Add 2 hours to the datetime
+#         dt_adjusted = dt + timedelta(hours=2)
+#         return dt_adjusted
+#     except Exception as e:
+#         logging.error(f"Failed to convert datetime: {datetime_str} - {str(e)}")
+#         return datetime_str  # Return the original string if conversion fails
     
+
 def get_attribute_value(attributes, target_id):
     """
     Retrieve the value.name of an attribute based on `id`.
