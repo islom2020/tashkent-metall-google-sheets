@@ -21,7 +21,7 @@ def fetch_references(client: MoyskladClient):
         },
         "currencies": {item["meta"]["href"]: item["name"] for item in client.fetch_paginated_data("/entity/currency")},
         "supplies": {item["meta"]["href"]: item["name"] for item in client.fetch_paginated_data("/entity/supply")},
-        "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+        "accounts": {str(item["accountId"]): item["name"] for item in client.fetch_all_organization_accounts()}
     }
 
 

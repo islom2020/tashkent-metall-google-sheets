@@ -72,7 +72,7 @@ class MoyskladClient:
             
             # Extract accounts from each organization
             for organization in organizations:
-                accounts = organization.get("accounts", {}).get("rows", [])
+                accounts = organization.get("rows", [])
                 all_accounts.extend(accounts)
         except Exception as e:
             logging.error(f"Error fetching or extracting accounts from organizations: {str(e)}")

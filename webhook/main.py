@@ -7,18 +7,20 @@ from clients.moysklad_client import MoyskladClient
 from etl.data_preparation import transform_supply, transform_customer_order, transform_purchase_return, transform_move, transform_sales_return, transform_loss, transform_payment
 import logging
 import os
+from etl.etl_moysklad_main import fetch_references
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, filename='webhook.log', format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 
-# Configure Redis client to connect to the Redis server
+# Configure Redis clientto connect to the Redis server
 redis_client = redis.StrictRedis(
     host='localhost', port=6379, db=0, decode_responses=True)
 
 # MoyskladClient instance
 moysklad_client = MoyskladClient()
+refs = fetch_references(moysklad_client)
 
 # Task configuration for different data types
 tasks = [
@@ -81,7 +83,7 @@ tasks = [
 ]
 
 # Function to fetch and transform data for a given task
-def fetch_and_transform_data(task):
+def fetch_and_transform_data(task, moysklad_client, refs):
     logging.info(f"Fetching data for {task['name']}...")
     try:
         raw_data = moysklad_client.fetch_paginated_data(task["endpoint"])
@@ -92,16 +94,19 @@ def fetch_and_transform_data(task):
     logging.info(f"Transforming data for {task['name']}...")
     try:
         transformed_data = task["transform_function"](
-            raw_data, refs={}, moysklad_client=moysklad_client)
+            data=raw_data, refs=refs, client=moysklad_client)
+        print(f"Transformed data for {task['name']}: {transformed_data}")
     except Exception as e:
+        print(e)
         logging.error(f"Error transforming data for {task['name']}: {e}")
         return []
     return transformed_data
 
 # Function to periodically update the cached data in Redis
-def update_cache():
+def update_cache(refs):
     for task in tasks:
-        transformed_data = fetch_and_transform_data(task)
+        transformed_data = fetch_and_transform_data(task, moysklad_client, refs)
+        print(f"Updating cache for {task['name']}: {transformed_data}")
         try:
             redis_client.set(task["slug"], json.dumps(transformed_data))
         except Exception as e:
@@ -158,6 +163,6 @@ def get_data(task_slug):
 
 if __name__ == '__main__':
     # Start the periodic cache update process before running the server
-    update_cache()
+    update_cache(refs)
     # Run the Flask application on port 3508
     app.run(port=3508)
