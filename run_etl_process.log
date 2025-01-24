@@ -141997,3 +141997,192 @@ Traceback (most recent call last):
 KeyError: 'bankName'
 
 [2025-01-23 23:01:09.816109] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 00:00:01.583585] Starting etl/etl_workly_main.py...
+[2025-01-24 00:00:55.743595] etl/etl_workly_main.py completed successfully!
+[2025-01-24 00:00:03.647599] Fetching Workly data...
+[2025-01-24 00:00:55.526252] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 00:00:55.743642] Starting etl/etl_moysklad_main.py...
+[2025-01-24 00:01:12.587760] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 00:01:12.587814] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 01:00:01.294761] Starting etl/etl_workly_main.py...
+[2025-01-24 01:00:55.753402] etl/etl_workly_main.py completed successfully!
+[2025-01-24 01:00:02.125061] Fetching Workly data...
+[2025-01-24 01:00:55.530509] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 01:00:55.753447] Starting etl/etl_moysklad_main.py...
+[2025-01-24 01:01:12.419340] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 01:01:12.419411] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 02:00:01.761519] Starting etl/etl_workly_main.py...
+[2025-01-24 02:00:13.664442] etl/etl_workly_main.py completed successfully!
+[2025-01-24 02:00:03.249692] Fetching Workly data...
+[2025-01-24 02:00:13.435454] ETL Process for Workly failed: Authentication failed: HTTPSConnectionPool(host='api.workly.uz', port=443): Max retries exceeded with url: /v1/oauth/token (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f1bc27a7940>: Failed to resolve 'api.workly.uz' ([Errno -2] Name or service not known)"))
+
+[2025-01-24 02:00:13.664489] Starting etl/etl_moysklad_main.py...
+[2025-01-24 02:00:57.651809] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 02:00:57.651867] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 03:00:01.372465] Starting etl/etl_workly_main.py...
+[2025-01-24 03:00:57.463493] etl/etl_workly_main.py completed successfully!
+[2025-01-24 03:00:03.283926] Fetching Workly data...
+[2025-01-24 03:00:57.287051] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 03:00:57.463559] Starting etl/etl_moysklad_main.py...
+[2025-01-24 03:01:16.769519] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 03:01:16.769581] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 04:00:02.070690] Starting etl/etl_workly_main.py...
+[2025-01-24 04:00:56.670291] etl/etl_workly_main.py completed successfully!
+[2025-01-24 04:00:05.568636] Fetching Workly data...
+[2025-01-24 04:00:56.493715] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 04:00:56.670344] Starting etl/etl_moysklad_main.py...
+[2025-01-24 04:01:16.751179] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 04:01:16.751233] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 05:00:01.680462] Starting etl/etl_workly_main.py...
+[2025-01-24 05:00:53.456667] etl/etl_workly_main.py completed successfully!
+[2025-01-24 05:00:04.183680] Fetching Workly data...
+[2025-01-24 05:00:53.280398] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 05:00:53.456741] Starting etl/etl_moysklad_main.py...
+[2025-01-24 05:01:17.652725] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 05:01:17.652786] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 06:00:02.233949] Starting etl/etl_workly_main.py...
+[2025-01-24 06:00:58.081800] etl/etl_workly_main.py completed successfully!
+[2025-01-24 06:00:05.075005] Fetching Workly data...
+[2025-01-24 06:00:57.878371] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 06:00:58.081949] Starting etl/etl_moysklad_main.py...
+[2025-01-24 06:01:17.698414] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 06:01:17.698484] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 07:00:02.485351] Starting etl/etl_workly_main.py...
+[2025-01-24 07:00:53.835434] etl/etl_workly_main.py completed successfully!
+[2025-01-24 07:00:04.661394] Fetching Workly data...
+[2025-01-24 07:00:53.660319] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 07:00:53.835550] Starting etl/etl_moysklad_main.py...
+[2025-01-24 07:01:12.457621] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 07:01:12.457677] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2025-01-24 08:00:01.699461] Starting etl/etl_workly_main.py...
+[2025-01-24 08:00:55.539442] etl/etl_workly_main.py completed successfully!
+[2025-01-24 08:00:03.787466] Fetching Workly data...
+[2025-01-24 08:00:55.353927] ETL Process for Workly failed: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+
+[2025-01-24 08:00:55.539489] Starting etl/etl_moysklad_main.py...
+[2025-01-24 08:01:16.088392] etl/etl_moysklad_main.py failed!
+Traceback (most recent call last):
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 117, in <module>
+    main()
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 37, in main
+    refs = fetch_references(moysklad_client)
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in fetch_references
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+  File "/home/upsoft/projects/tashkent-metall-google-sheets/etl/etl_moysklad_main.py", line 24, in <dictcomp>
+    "accounts": {str(item["accountId"]): item["bankName"] for item in client.fetch_all_organization_accounts()}
+KeyError: 'bankName'
+
+[2025-01-24 08:01:16.088523] ETL process failed: etl/etl_moysklad_main.py failed with exit code 1

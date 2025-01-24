@@ -1,43 +1,160 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import redis
 import json
 from threading import Timer
+from datetime import datetime
+from clients.moysklad_client import MoyskladClient
+from etl.data_preparation import transform_supply, transform_customer_order, transform_purchase_return, transform_move, transform_sales_return, transform_loss, transform_payment
+import logging
+import os
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
 # Configure Redis client to connect to the Redis server
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(
+    host='localhost', port=6379, db=0, decode_responses=True)
 
-# Function to simulate fetching customer orders from a database or external service
-def get_customer_orders():
-    return [
-        {"id": 1, "customer_name": "John Doe", "order_amount": 99.99},
-        {"id": 2, "customer_name": "Jane Smith", "order_amount": 149.49},
-        {"id": 3, "customer_name": "Sam Wilson", "order_amount": 79.89}
-    ]
+# MoyskladClient instance
+moysklad_client = MoyskladClient()
+
+# Task configuration for different data types
+tasks = [
+    {
+        "name": "Приход товар",
+        "slug": "supply",
+        "endpoint": "/entity/supply?expand=positions&limit=100&offset=0",
+        "transform_function": transform_supply,
+        "headers": ["Дата", "№ документа", "Контрагент", "Склад", "Наименование товара", "Ед.изм", "Количество", "Валюта", "Цена", "Сумма", "Вес"]
+    },
+    {
+        "name": "Возврат приход товар",
+        "slug": "purchaseReturn",
+        "endpoint": "/entity/purchasereturn?expand=supply,positions&limit=100&offset=0",
+        "transform_function": transform_purchase_return,
+        "headers": ["Дата", "№ документа", "№ документа приход товар", "Контрагент", "Склад", "Наименование товара", "Ед.изм", "Количество", "Валюта", "Цена", "Сумма", "Вес"]
+    },
+    {
+        "name": "Продажа товар",
+        "slug": "customerOrder",
+        "endpoint": "/entity/demand?expand=positions&limit=100&offset=0",
+        "transform_function": transform_customer_order,
+        "headers": ["Дата", "№ документа", "Клиент", "Склад", "Наименование товара", "Ед.изм", "Валюта", "Цена", "Сумма", "Количество", "Вес", "Грузчик бригада", "Кто отгрузил"]
+    },
+    {
+        "name": "Перемещение",
+        "slug": "move",
+        "endpoint": "/entity/move?expand=positions&limit=100&offset=0",
+        "transform_function": transform_move,
+        "headers": ["Дата", "№ документа", "Склад отгрузка", "Склад приход", "Наименование товара", "Ед.изм", "Количество", "Вес"]
+    },
+    {
+        "name": "Возврат продажа товар",
+        "slug": "salesReturn",
+        "endpoint": "/entity/salesreturn?expand=demand,positions&limit=100&offset=0",
+        "transform_function": transform_sales_return,
+        "headers": ["Дата", "№ документа", "№ документа приход товар", "Контрагент", "Склад", "Наименование товара", "Ед.изм", "Количество", "Валюта", "Цена", "Сумма", "Вес"]
+    },
+    {
+        "name": "Списание",
+        "slug": "loss",
+        "endpoint": "/entity/loss?expand=positions&limit=100&offset=0",
+        "transform_function": transform_loss,
+        "headers": ["Дата", "№ документа", "Склад", "Наименование товара", "Количество", "Ед.изм", "Вес"]
+    },
+    {
+        "name": "Касса приход",
+        "slug": "paymentIn",
+        "endpoint": "/entity/paymentin",
+        "transform_function": transform_payment,
+        "headers": ["Дата", "Кошелок", "Валюта", "Категория", "Контрагент", "Назначение", "Сумма"]
+    },
+    {
+        "name": "Касса расход",
+        "slug": "paymentOut",
+        "endpoint": "/entity/paymentout?expand=expenseItem&limit=100&offset=0",
+        "transform_function": transform_payment,
+        "headers": ["Дата", "Кошелок", "Валюта", "Категория", "Контрагент", "Назначение", "Сумма"]
+    }
+]
+
+# Function to fetch and transform data for a given task
+def fetch_and_transform_data(task):
+    logging.info(f"Fetching data for {task['name']}...")
+    try:
+        raw_data = moysklad_client.fetch_paginated_data(task["endpoint"])
+    except Exception as e:
+        logging.error(f"Error fetching data for {task['name']}: {e}")
+        return []
+
+    logging.info(f"Transforming data for {task['name']}...")
+    try:
+        transformed_data = task["transform_function"](
+            raw_data, refs={}, moysklad_client=moysklad_client)
+    except Exception as e:
+        logging.error(f"Error transforming data for {task['name']}: {e}")
+        return []
+    return transformed_data
 
 # Function to periodically update the cached data in Redis
 def update_cache():
-    # Fetch fresh data using the ready-made function
-    orders = get_customer_orders()
-    # Store the data in Redis as a JSON string
-    redis_client.set('customer_orders', json.dumps(orders))
+    for task in tasks:
+        transformed_data = fetch_and_transform_data(task)
+        try:
+            redis_client.set(task["slug"], json.dumps(transformed_data))
+        except Exception as e:
+            logging.error(f"Error setting cache for {task['name']}: {e}")
     # Schedule this function to run again after 1 hour (3600 seconds)
     Timer(3600, update_cache).start()
 
-# Define a route to handle GET requests at /customerOrder
-@app.route('/customerOrder', methods=['GET'])
-def customer_order_endpoint():
-    # Attempt to fetch cached data from Redis
-    cached_orders = redis_client.get('customer_orders')
-    if cached_orders:
-        # If data is found in cache, return it as a JSON response
-        return jsonify(json.loads(cached_orders))
+# Add basic authentication
+def check_auth(username, password):
+    return username == os.getenv('BASIC_AUTH_USERNAME', 'admin') and password == os.getenv('BASIC_AUTH_PASSWORD', 'metall_123')
+
+def authenticate():
+    return jsonify({"error": "Authentication required"}), 401
+
+@app.before_request
+def require_basic_auth():
+    auth = request.authorization
+    if not auth or not check_auth(auth.username, auth.password):
+        return authenticate()
+
+# Dynamic endpoint generation based on "slug"
+@app.route('/<slug>', methods=['GET'])
+def dynamic_endpoint(slug):
+    task = next((task for task in tasks if task["slug"] == slug), None)
+    if not task:
+        return jsonify({"error": "Invalid endpoint"}), 404
+
+    try:
+        cached_data = redis_client.get(task["slug"])
+    except Exception as e:
+        logging.error(f"Error getting cache for {task['name']}: {e}")
+        cached_data = None
+
+    if cached_data:
+        return jsonify(json.loads(cached_data))
     else:
-        # If cache is empty, fetch data, update the cache, and return the response
-        orders = get_customer_orders()
-        redis_client.set('customer_orders', json.dumps(orders))
-        return jsonify(orders)
+        transformed_data = fetch_and_transform_data(task)
+        try:
+            redis_client.set(task["slug"], json.dumps(transformed_data))
+        except Exception as e:
+            logging.error(f"Error setting cache for {task['name']}: {e}")
+        return jsonify(transformed_data)
+
+@app.route('/data/<task_slug>', methods=['GET'])
+def get_data(task_slug):
+    logging.info(f"Fetching data for task: {task_slug}")
+    data = redis_client.get(task_slug)
+    if data:
+        logging.info(f"Data found for task: {task_slug}")
+        return jsonify(json.loads(data))
+    else:
+        logging.warning(f"No data found for task: {task_slug}")
+        return jsonify([]), 404
 
 if __name__ == '__main__':
     # Start the periodic cache update process before running the server
