@@ -95,9 +95,7 @@ def fetch_and_transform_data(task, moysklad_client, refs):
     try:
         transformed_data = task["transform_function"](
             data=raw_data, refs=refs, client=moysklad_client)
-        print(f"Transformed data for {task['name']}: {transformed_data}")
     except Exception as e:
-        print(e)
         logging.error(f"Error transforming data for {task['name']}: {e}")
         return []
     return transformed_data
@@ -106,11 +104,12 @@ def fetch_and_transform_data(task, moysklad_client, refs):
 def update_cache(refs):
     for task in tasks:
         transformed_data = fetch_and_transform_data(task, moysklad_client, refs)
-        print(f"Updating cache for {task['name']}: {transformed_data}")
         try:
             redis_client.set(task["slug"], json.dumps(transformed_data))
         except Exception as e:
             logging.error(f"Error setting cache for {task['name']}: {e}")
+            print(f"Error setting cache for {task['name']}: {e}")
+        print(f"Updated cache for {task['name']} at {datetime.now()}")
     # Schedule this function to run again after 1 hour (3600 seconds)
     Timer(3600, update_cache).start()
 

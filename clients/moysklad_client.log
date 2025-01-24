@@ -12673,3 +12673,39 @@
 2025-01-24 08:51:28,366 - INFO - [33mPress CTRL+C to quit[0m
 2025-01-24 08:51:55,534 - INFO - 127.0.0.1 - - [24/Jan/2025 08:51:55] "[33mGET /customerOrder HTTP/1.1[0m" 404 -
 2025-01-24 08:52:05,824 - INFO - 127.0.0.1 - - [24/Jan/2025 08:52:05] "GET /supply HTTP/1.1" 200 -
+2025-01-24 08:54:45,829 - ERROR - Connection error: https://api.moysklad.ru/api/remap/1.2/entity/store - HTTPSConnectionPool(host='api.moysklad.ru', port=443): Max retries exceeded with url: /api/remap/1.2/entity/store (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ff35341cfa0>: Failed to resolve 'api.moysklad.ru' ([Errno -2] Name or service not known)"))
+2025-01-24 08:54:45,831 - ERROR - Error fetching paginated data from https://api.moysklad.ru/api/remap/1.2/entity/store: HTTPSConnectionPool(host='api.moysklad.ru', port=443): Max retries exceeded with url: /api/remap/1.2/entity/store (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ff35341cfa0>: Failed to resolve 'api.moysklad.ru' ([Errno -2] Name or service not known)"))
+2025-01-24 08:57:15,895 - ERROR - Error processing customer order 02363: unhashable type: 'dict'
+2025-01-24 08:57:15,930 - ERROR - Error processing customer order 01974: unhashable type: 'dict'
+2025-01-24 08:57:15,944 - ERROR - Error processing customer order 03207: unhashable type: 'dict'
+2025-01-24 08:57:16,026 - ERROR - Error processing customer order 00502: unhashable type: 'dict'
+2025-01-24 08:57:16,034 - ERROR - Error processing customer order 00469: unhashable type: 'dict'
+2025-01-24 08:57:47,866 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3508
+2025-01-24 08:57:47,866 - INFO - [33mPress CTRL+C to quit[0m
+2025-01-24 08:58:34,454 - INFO - 127.0.0.1 - - [24/Jan/2025 08:58:34] "GET /supply HTTP/1.1" 200 -
+2025-01-24 08:58:38,468 - INFO - 127.0.0.1 - - [24/Jan/2025 08:58:38] "[33mGET /customerorder HTTP/1.1[0m" 404 -
+2025-01-24 09:00:18,790 - ERROR - Connection error: https://api.moysklad.ru/api/remap/1.2/entity/demand?offset=1000&expand=positions&limit=100 - HTTPSConnectionPool(host='api.moysklad.ru', port=443): Max retries exceeded with url: /api/remap/1.2/entity/demand?offset=1000&expand=positions&limit=100 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f02748c0850>: Failed to resolve 'api.moysklad.ru' ([Errno -2] Name or service not known)"))
+2025-01-24 09:00:18,790 - ERROR - Error fetching paginated data from https://api.moysklad.ru/api/remap/1.2/entity/demand?offset=1000&expand=positions&limit=100: HTTPSConnectionPool(host='api.moysklad.ru', port=443): Max retries exceeded with url: /api/remap/1.2/entity/demand?offset=1000&expand=positions&limit=100 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f02748c0850>: Failed to resolve 'api.moysklad.ru' ([Errno -2] Name or service not known)"))
+2025-01-24 09:00:18,818 - ERROR - Error processing customer order 02363: unhashable type: 'dict'
+2025-01-24 09:02:46,006 - ERROR - Error processing customer order 02363: unhashable type: 'dict'
+2025-01-24 09:02:46,040 - ERROR - Error processing customer order 01974: unhashable type: 'dict'
+2025-01-24 09:02:46,056 - ERROR - Error processing customer order 03207: unhashable type: 'dict'
+2025-01-24 09:02:46,106 - ERROR - Error processing customer order 00502: unhashable type: 'dict'
+2025-01-24 09:02:46,112 - ERROR - Error processing customer order 00469: unhashable type: 'dict'
+2025-01-24 09:04:50,904 - ERROR - Error processing customer order 02363: unhashable type: 'dict'
+2025-01-24 09:04:50,936 - ERROR - Error processing customer order 01974: unhashable type: 'dict'
+2025-01-24 09:04:50,953 - ERROR - Error processing customer order 03207: unhashable type: 'dict'
+2025-01-24 09:04:51,019 - ERROR - Error processing customer order 00502: unhashable type: 'dict'
+2025-01-24 09:04:51,025 - ERROR - Error processing customer order 00469: unhashable type: 'dict'
+2025-01-24 09:07:43,084 - ERROR - Error processing customer order 02363: unhashable type: 'dict'
+2025-01-24 09:07:43,115 - ERROR - Error processing customer order 01974: unhashable type: 'dict'
+2025-01-24 09:07:43,130 - ERROR - Error processing customer order 03207: unhashable type: 'dict'
+2025-01-24 09:07:43,201 - ERROR - Error processing customer order 00502: unhashable type: 'dict'
+2025-01-24 09:07:43,207 - ERROR - Error processing customer order 00469: unhashable type: 'dict'
+2025-01-24 09:08:19,245 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3508
+2025-01-24 09:08:19,245 - INFO - [33mPress CTRL+C to quit[0m
+2025-01-24 09:08:23,589 - INFO - 127.0.0.1 - - [24/Jan/2025 09:08:23] "GET /supply HTTP/1.1" 200 -
+2025-01-24 09:08:50,640 - INFO - 127.0.0.1 - - [24/Jan/2025 09:08:50] "[31m[1mGET /supply HTTP/1.1[0m" 401 -
+2025-01-24 09:10:20,713 - INFO - 127.0.0.1 - - [24/Jan/2025 09:10:20] "GET /supply HTTP/1.1" 200 -
