@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import redis
 import json
 from threading import Timer
+from functools import partial
 from datetime import datetime
 from clients.moysklad_client import MoyskladClient
 from etl.data_preparation import transform_supply, transform_customer_order, transform_purchase_return, transform_move, transform_sales_return, transform_loss, transform_payment
@@ -102,16 +103,16 @@ def fetch_and_transform_data(task, moysklad_client, refs):
 
 # Function to periodically update the cached data in Redis
 def update_cache(refs):
+    logging.info("Starting cache update")
     for task in tasks:
         transformed_data = fetch_and_transform_data(task, moysklad_client, refs)
         try:
             redis_client.set(task["slug"], json.dumps(transformed_data))
+            logging.info(f"Updated cache for {task['name']} at {datetime.now()}")
         except Exception as e:
             logging.error(f"Error setting cache for {task['name']}: {e}")
-            print(f"Error setting cache for {task['name']}: {e}")
-        print(f"Updated cache for {task['name']} at {datetime.now()}")
     # Schedule this function to run again after 1 hour (3600 seconds)
-    Timer(3600, update_cache).start()
+    Timer(3600, partial(update_cache, refs)).start()
 
 # Add basic authentication
 def check_auth(username, password):
