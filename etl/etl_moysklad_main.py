@@ -3,7 +3,7 @@ from etl.data_preparation import transform_supply, transform_customer_order, tra
 from sheets.sheets_handler import GoogleSheetsHandler
 from datetime import datetime
 
-GOOGLE_CREDENTIALS_PATH = "/home/upsoft/projects/tashkent-metall-google-sheets/sheets/fair-splice-443801-q3-42d1e9b89145.json"
+GOOGLE_CREDENTIALS_PATH = "/home/upsoft/projects/tashkent-metall-google-sheets/sheets/fair-splice-443801-q3-a7bd8a29582f.json"
 GOOGLE_SHEETS_ID = "1ucns79cbkgtybQl2RkvVe1ppfxRRpdhNLXnOqJtt67A"
 
 
@@ -86,6 +86,14 @@ def main():
             "transform_function": transform_payment,
             "headers": ["Дата", "Кошелок", "Валюта", "Категория", "Контрагент", "Назначение", "Сумма"]
         }
+        # ,
+        # {
+        #     "name": "Остатки по складам",
+        #     "endpoint": "/report/stock/all?limit=100&offset=0",
+        #     "transform_function": transform_stock,
+        #     "headers": ["Склад", "Наименование товара", "Ед.изм", "Количество Остаток", "Количество Блокировка", "Количество Резерв", "Количество Остаток", "Количество Ожидание", "Количество Доступно"]
+            
+        # }
     ]
 
     # Process Each Task

@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 
-logging.basicConfig(filename="etl/data_preparation.log", level=logging.ERROR,
+logging.basicConfig(filename="data_preparation.log", level=logging.ERROR,
                     format="%(asctime)s - %(levelname)s - %(message)s")
 
 demand_attribute_kto_otgruzil = "fd17e1fe-ab2d-11ef-0a80-02cc003a75b0"
@@ -217,6 +217,9 @@ def transform_payment(data, refs, client):
         except Exception as e:
             logging.error(f"Error processing payment entry {item.get('name', 'Unknown')}: {str(e)}")
     return results
+
+# def transform_stock(data, refs, client):
+    
 
 def adjust_datetime(datetime_str):
     """Adjust datetime string by adding 2 hours."""
